@@ -81,8 +81,7 @@ class SnakeEnv(gym.Env):
 
     def reset(self):
         self.game.reset()
-        self.viewer.close()
-        self.viewer = SnakeViewer(self.game)
+        self.viewer.reset()
 
 
 class SnakeViewer(object):
@@ -104,11 +103,18 @@ class SnakeViewer(object):
         self.square_width = screen_width / self.game.width
         self.square_height = screen_height / self.game.height
         self.viewer = rendering.Viewer(screen_width, screen_height)
+        self.food_color = food_color
+        self.snake_color = snake_color
+        self.reset()
+
+    def reset(self):
+        self.viewer.geoms = []
         self.snake_geoms = {}
-        self.food_geom = self.get_square(game.food_square, food_color)
+        _, food_square = self.game.get_state()
+        self.food_geom = self.get_square(food_square, self.food_color)
         self.viewer.add_geom(self.food_geom)
-        for snake_square in game.get_snake_squares():
-            snake_geom = self.get_square(snake_square, snake_color)
+        for snake_square in self.game.get_snake_squares():
+            snake_geom = self.get_square(snake_square, self.snake_color)
             self.snake_geoms[snake_square] = snake_geom
             self.viewer.add_geom(snake_geom)
 
