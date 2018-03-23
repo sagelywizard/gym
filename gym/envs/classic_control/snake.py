@@ -30,7 +30,7 @@ class Event(Enum):
     WIN = 5
 
 
-class SnakeEnv(object):
+class SnakeEnv(gym.Env):
     """An environment for snake
 
     Arguments:
